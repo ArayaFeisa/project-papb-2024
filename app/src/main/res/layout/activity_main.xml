@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/green"
+                android:background="@color/black"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -254,7 +254,7 @@
                             android:layout_weight="1"
                             android:text="Lihat Semua"
                             android:textAlignment="viewEnd"
-                            android:textColor="@color/green"
+                            android:textColor="@color/black"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -271,7 +271,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="10dp"
-                            app:srcCompat="@drawable/gambarsatu" />
+                             />
 
                         <TextView
                             android:id="@+id/judul"
@@ -291,7 +291,7 @@
                             android:layout_marginTop="3dp"
                             android:layout_marginEnd="10dp"
                             android:text="Organisasi"
-                            android:textColor="@color/green" />
+                            android:textColor="@color/black" />
 
                     </LinearLayout>
 
