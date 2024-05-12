@@ -39,6 +39,8 @@ public class MateriBaru extends AppCompatActivity {
     MateriDatabase materiDatabase;
     EditText etJudul, etBab, etDeskripsi;
 
+    //tanpa fragment
+
 
 
 
