@@ -1,19 +1,9 @@
-package com.example.cobakioskita.activity;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+package com.example.kioskitalocal;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.cobakioskita.R;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -22,10 +12,9 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        TextView textView = findViewById(R.id.textView3);
+        TextView tv3 = findViewById(R.id.textView3);
         String kelas = getIntent().getStringExtra("kelas");
-        textView.setText(kelas);
+        tv3.setText(kelas);
+
     }
 }
-
-
