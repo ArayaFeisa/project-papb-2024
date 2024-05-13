@@ -26,7 +26,7 @@
             android:name=".UploadImage"
             android:exported="false" />
         <activity
-            android:name=".MateriBaru"
+            android:name=".MateriBaruActivity"
             android:exported="false" />
         <activity
             android:name=".PilihBab"

@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void lihatMateri(View view) {
-        Intent i = new Intent(this, MateriBaru.class);
+        Intent i = new Intent(this, MateriBaruActivity.class);
         startActivity(i);
     }
 

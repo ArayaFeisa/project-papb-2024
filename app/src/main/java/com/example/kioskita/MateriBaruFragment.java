@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,8 +21,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
@@ -28,27 +30,21 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MateriBaru extends AppCompatActivity {
+public class MateriBaruFragment extends Fragment {
 
     ImageButton btnPickImage;
     ImageView imageView;
     ActivityResultLauncher<Intent> resultLauncher;
     Uri selectedImageUri;
     String previewVisited = "";
-    Button btSubmit;
+    Button btSubmit, btPreviewMateri, btPilihMateri;
     MateriDatabase materiDatabase;
     EditText etJudul, etBab, etDeskripsi;
 
-    //tanpa fragment
-
-
-
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_materi_baru);
-        ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_materi_baru, container, false);
 
         RoomDatabase.Callback myCallback = new RoomDatabase.Callback() {
             @Override
@@ -61,24 +57,25 @@ public class MateriBaru extends AppCompatActivity {
                 super.onDestructiveMigration(db);
             }
         };
-        materiDatabase = Room.databaseBuilder(getApplicationContext(), MateriDatabase.class, "Materi")
+        materiDatabase = Room.databaseBuilder(requireContext(), MateriDatabase.class, "Materi")
                 .addCallback(myCallback).build();
 
-
-
-        btnPickImage = mainLayout.findViewById(R.id.imageButton);
-        imageView = mainLayout.findViewById(R.id.imageButton);
-        btSubmit = mainLayout.findViewById(R.id.btSubmit);
-        etJudul = mainLayout.findViewById(R.id.etJudul);
-        etBab = mainLayout.findViewById(R.id.etBab);
-        etDeskripsi = mainLayout.findViewById(R.id.etDeskripsi);
+        btnPickImage = view.findViewById(R.id.ibUpload);
+        imageView = view.findViewById(R.id.ibUpload);
+        btSubmit = view.findViewById(R.id.btSubmit);
+        etJudul = view.findViewById(R.id.etJudulMateri);
+        etBab = view.findViewById(R.id.etBab);
+        btPilihMateri = view.findViewById(R.id.btPilihMateri);
+        btPreviewMateri = view.findViewById(R.id.btPreviewMateri);
+        etDeskripsi = view.findViewById(R.id.etDeskripsi);
         registerResult();
 
-        btnPickImage.setOnClickListener(view -> pickImage());
+        btnPickImage.setOnClickListener(view1 -> pickImage());
+        btPreviewMateri.setOnClickListener(view1 -> preview());
+        btPilihMateri.setOnClickListener(view1 -> pilih());
 
-        btSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btSubmit.setOnClickListener(v -> {
+            try {
                 String judul = etJudul.getText().toString();
                 String bab = etBab.getText().toString();
                 String gambar = selectedImageUri.toString();
@@ -87,46 +84,45 @@ public class MateriBaru extends AppCompatActivity {
                 MateriModel materi = new MateriModel(judul, bab, gambar, deskripsi);
 
                 addMateriBackground(materi);
-                finish();
+                requireActivity().finish();
+            } catch (NullPointerException e) {
+                Toast.makeText(requireContext(), "Harap isi data dan gambar dengan lengkap", Toast.LENGTH_SHORT).show();
             }
+
+
+
         });
+
+        return view;
     }
 
     public void addMateriBackground(MateriModel materi) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
+        executorService.execute(() -> {
+            materiDatabase.getMateriDAO().addMateri(materi);
 
-                materiDatabase.getMateriDAO().addMateri(materi);
-
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MateriBaru.this, "Berhasil menambahkan materi", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
+            handler.post(() -> Toast.makeText(requireContext(), "Berhasil menambahkan materi", Toast.LENGTH_SHORT).show());
         });
     }
+
 
     private void pickImage() {
         Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
         resultLauncher.launch(intent);
-
     }
 
-    public void preview(View view) {
-        ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
-        imageView = mainLayout.findViewById(R.id.imageButton);
-        Intent i = new Intent(this, PreviewMateri.class);
-        String judul = ((EditText) mainLayout.findViewById(R.id.etJudul)).getText().toString();
-        String bab = ((EditText) mainLayout.findViewById(R.id.etBab)).getText().toString();
-        String deskripsi = ((EditText) mainLayout.findViewById(R.id.etDeskripsi)).getText().toString();
+    private void pilih() {
+        Intent i = new Intent(requireContext(), PilihBab.class);
+        startActivityForResult(i, 98);
+    }
+
+    private void preview() {
+        Intent i = new Intent(requireContext(), PreviewMateri.class);
+        String judul = etJudul.getText().toString();
+        String bab = etBab.getText().toString();
+        String deskripsi = etDeskripsi.getText().toString();
         if (selectedImageUri != null) {
             i.putExtra("gambar", selectedImageUri.toString());
         }
@@ -134,11 +130,6 @@ public class MateriBaru extends AppCompatActivity {
         i.putExtra("bab", bab);
         i.putExtra("deskripsi", deskripsi);
         startActivityForResult(i, 99);
-    }
-
-    public void pilih(View view) {
-        Intent i = new Intent(MateriBaru.this, PilihBab.class);
-        startActivityForResult(i, 98);
     }
 
     private void registerResult() {
@@ -152,44 +143,37 @@ public class MateriBaru extends AppCompatActivity {
                             selectedImageUri = imageUri;
                             imageView.setImageURI(imageUri);
                         } catch (Exception e) {
-                            Toast.makeText(MateriBaru.this, "Tidak ada gambar terpilih", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Tidak ada gambar terpilih", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
         );
     }
 
+//    public void submit() {
+//        requireActivity().finish();
+//    }
+
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (previewVisited.equalsIgnoreCase("visited")) {
-            ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
-            Button preview =  mainLayout.findViewById(R.id.prevTampilan);
-            preview.setTextColor(Color.LTGRAY);
+            Button previewButton = requireView().findViewById(R.id.btPreviewMateri);
+            previewButton.setTextColor(Color.LTGRAY);
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 99 && resultCode == RESULT_OK) {
+        if (requestCode == 99 && resultCode == getActivity().RESULT_OK) {
             String value = data.getStringExtra("key");
             previewVisited = value;
-        } else if (requestCode == 98 && resultCode == RESULT_OK) {
-            EditText etBab = findViewById(R.id.etBab);
+        } else if (requestCode == 98 && resultCode == getActivity().RESULT_OK) {
+            EditText etBab = requireView().findViewById(R.id.etBab);
             String value = data.getStringExtra("bab");
             etBab.setText(value);
         }
     }
 
-    public void submit(View view) {
-        finish();
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    public void backToMain(View view) {
-        finish();
-    }
 }

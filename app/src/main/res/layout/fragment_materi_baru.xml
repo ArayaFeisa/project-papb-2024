@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MateriBaruFragment">
+
+    <TextView
+        android:id="@+id/tvJudulMateri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Judul Materi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibUpload" />
+
+    <EditText
+        android:id="@+id/etJudulMateri"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rborder"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvJudulMateri" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Judul Bab Materi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etJudulMateri" />
+
+    <EditText
+        android:id="@+id/etBab"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rborder"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Deskripsi Materi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etBab" />
+
+    <EditText
+        android:id="@+id/etDeskripsi"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rborder"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:padding="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <Button
+        android:id="@+id/btSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/rsquare"
+        android:backgroundTint="#32A696"
+        android:text="Submit"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageButton
+        android:id="@+id/ibUpload"
+        android:layout_width="match_parent"
+        android:layout_height="131dp"
+        android:background="@drawable/fborder"
+        android:scaleType="centerCrop"
+        android:src="@drawable/up"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btPreviewMateri"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginTop="8dp"
+        android:background="#00FFFFFF"
+        android:padding="0dp"
+        android:text="Preview Tampilan"
+        android:textColor="#32a696"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDeskripsi" />
+
+    <Button
+        android:id="@+id/btPilihMateri"
+        android:layout_width="48dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rsquare"
+        android:padding="0dp"
+        android:text="Pilih"
+        android:textSize="10sp"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/etBab"
+        app:layout_constraintEnd_toEndOf="@+id/etBab"
+        app:layout_constraintTop_toTopOf="@+id/etBab" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
