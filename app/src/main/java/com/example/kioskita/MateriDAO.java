@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

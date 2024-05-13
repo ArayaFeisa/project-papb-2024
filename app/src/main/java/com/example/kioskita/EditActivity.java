@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,3 +44,4 @@ public class EditActivity extends AppCompatActivity {
         });
     }
 }
+

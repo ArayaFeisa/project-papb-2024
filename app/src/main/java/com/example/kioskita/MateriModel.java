@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

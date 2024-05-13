@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

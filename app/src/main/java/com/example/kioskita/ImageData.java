@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 public class ImageData {
     private String imageUrl;

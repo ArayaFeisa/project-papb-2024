@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

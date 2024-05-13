@@ -1,4 +1,4 @@
-package com.example.kioskitalocal;
+package com.example.kioskita;
 
 import android.content.Context;
 import android.graphics.Bitmap;
