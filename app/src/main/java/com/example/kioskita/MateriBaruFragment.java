@@ -27,6 +27,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,6 +46,9 @@ public class MateriBaruFragment extends Fragment {
     Button btSubmit, btPreviewMateri, btPilihMateri;
     MateriDatabase materiDatabase;
     EditText etJudul, etBab, etDeskripsi;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -68,6 +77,9 @@ public class MateriBaruFragment extends Fragment {
         btPilihMateri = view.findViewById(R.id.btPilihMateri);
         btPreviewMateri = view.findViewById(R.id.btPreviewMateri);
         etDeskripsi = view.findViewById(R.id.etDeskripsi);
+        mAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
         registerResult();
 
         btnPickImage.setOnClickListener(view1 -> pickImage());
@@ -97,15 +109,21 @@ public class MateriBaruFragment extends Fragment {
     }
 
     public void addMateriBackground(MateriModel materi) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
 
-        executorService.execute(() -> {
-            materiDatabase.getMateriDAO().addMateri(materi);
-
-            handler.post(() -> Toast.makeText(requireContext(), "Berhasil menambahkan materi", Toast.LENGTH_SHORT).show());
+        databaseReference.child("materi").child(mAuth.getUid()).push().setValue(materi).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(requireContext(), "Berhasil memasukkan data", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(requireContext(), "Gagal memasukkan data", Toast.LENGTH_SHORT).show();
+            }
         });
+
     }
+
 
 
     private void pickImage() {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +27,10 @@ public class HomeActivity extends AppCompatActivity {
     MateriDatabase materiDatabase;
     List<MateriModel> materiList;
     TextView tvListmateri;
+    Button btLogout;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -29,6 +38,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         tvListmateri = findViewById(R.id.tvListMateri);
+        btLogout = findViewById(R.id.btLogout);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        btLogout.setOnClickListener(view -> {
+            logOut();
+        });
 
         RoomDatabase.Callback myCallback = new RoomDatabase.Callback() {
             @Override
@@ -43,6 +59,16 @@ public class HomeActivity extends AppCompatActivity {
         };
         materiDatabase = Room.databaseBuilder(getApplicationContext(), MateriDatabase.class, "Materi")
                 .addCallback(myCallback).build();
+    }
+
+    public void logOut() {
+        mAuth.signOut();
+
+        Intent intent = new Intent(HomeActivity.this,
+                LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);//makesure user cant go back
+        startActivity(intent);
     }
 
     @Override
