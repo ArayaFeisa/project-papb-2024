@@ -42,8 +42,8 @@ public class ListAdapter
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Tasks task = this.task.get(position);
         VH vh = (VH) holder;
-        vh.tv_taskTitle.setText(task.judul.toString());
-        vh.tv_taskDesc.setText(task.desc.toString());
+        vh.tv_taskTitle.setText(task.getJudul().toString());
+        vh.tv_taskDesc.setText(task.getDeskripsi().toString());
     }
 
     @Override
